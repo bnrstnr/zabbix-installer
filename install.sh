@@ -7,8 +7,7 @@ set -e
 
 zabbix_install()
 {
-  sudo dnf install -y policycoreutils-python-utils zabbix-server-mysql zabbix-web-mysql \
-       mod_ssl mariadb-server
+  sudo dnf install -y policycoreutils-python-utils zabbix-server-mysql zabbix-web-mysql mod_ssl mariadb-server
 
   timezone=$(timedatectl | grep "Time zone:" | \
                 awk -F':' '{ print $2 }' | awk '{ print $1 }')
@@ -18,8 +17,7 @@ zabbix_install()
        -e "s:^;date.timezone =.*:date.timezone = \"${timezone}\":g" \
        -i /etc/php.ini
 
-  sudo systemctl enable mariadb
-  sudo systemctl start mariadb
+  sudo systemctl enable --now mariadb
 
   cat <<EOF | sudo mysql -uroot
 create database zabbix;
